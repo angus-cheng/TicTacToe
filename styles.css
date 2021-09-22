@@ -1,0 +1,49 @@
+.gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: 
+        "tL tM tR"
+        "cL cM cR"
+        "bL bM bR";
+}
+
+.topLeft {
+    grid-area: tL;
+}
+
+.topMiddle {
+    grid-area: tM;
+}
+
+.topRight {
+    grid-area: tR;
+}
+
+.centreLeft {
+    grid-area: cL;
+}
+
+.centreMiddle {
+    grid-area: cM;
+}
+
+.centreRight {
+    grid-area: cR;
+}
+
+.bottomLeft {
+    grid-area: bL;
+}
+
+.bottomMiddle {
+    grid-area: bM;
+}
+
+.bottomRight {
+    grid-area: bR;
+}
+
+.gameBoard > * {
+    border: 1px solid black;
+}
