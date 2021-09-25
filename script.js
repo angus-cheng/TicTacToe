@@ -16,32 +16,9 @@ const gameBoard = (() => {
         return true;
     };
 
-    const addSym = (sym, x, y) => {
-        if (checkAvail(x, y)) {
-            board[y][x] = sym;
-        }
-        checkMatchRow();
-
-        return;
-    };
-
-    const checkMatchRow = () => {
-        rowSum = '';
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                rowSum += board[i][j];
-            }
-        }
-
-        if (rowSum.search('XXX') != -1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    const makeTurn = () => {
+    const playerTurn = () => {
         let sym;
+
         if (turn % 2 == 0) {
             sym = 'X';
         } else {
@@ -52,10 +29,69 @@ const gameBoard = (() => {
         return sym;
     };
 
+    const addSym = (sym, x, y) => {
+        if (checkAvail(x, y)) {
+            board[y][x] = sym;
+        }
+        checkRowMatch();
+        checkColMatch();
+        checkDiagMatch();
+
+        return;
+    };
+
+    const checkRowMatch = () => {
+        let rowSum = '';
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                rowSum += board[i][j];
+            }
+        }
+
+        if (rowSum.search(/XXX|OOO/) != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const checkColMatch = () => {
+        let colSum = '';
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                colSum += board[j][i];
+            }
+        }
+
+        if (colSum.search(/XXX|OOO/) != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const checkDiagMatch = () => {
+        let diagSum1 = '';
+        let diagSum2 = '';
+        for (let i = 0; i < board.length; i++) {
+            diagSum1 += board[i][i];
+        }
+
+        for (let i = 0; i < board.length; i++) {
+            diagSum2 += board[board.length - i - 1][i];
+        }
+
+        if (diagSum1.search(/XXX|OOO/) != -1 || diagSum2.search(/XXX|OOO/) != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return {
         board,
         addSym,
-        makeTurn 
+        playerTurn 
     };
 })();
 
@@ -119,10 +155,9 @@ const Player = (name) => {
 
 board.forEach(cell => {
     cell.addEventListener('click', (event) => {
-        const sym = gameBoard.makeTurn();
+        const sym = gameBoard.playerTurn();
         const cellCoord = displayController.changeDisplay(event, sym);
         gameBoard.addSym(sym, cellCoord[0], cellCoord[1]);
-        console.log(gameBoard.board);
     })
 });
 
