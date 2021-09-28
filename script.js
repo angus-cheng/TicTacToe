@@ -1,4 +1,5 @@
 const board = Array.from(document.querySelectorAll('.gameBoard > *'));
+const form = document.querySelector('#form');
 
 const gameBoard = (() => {
     let board = new Array(3);
@@ -33,11 +34,9 @@ const gameBoard = (() => {
         if (checkAvail(x, y)) {
             board[y][x] = sym;
         }
-        checkRowMatch();
-        checkColMatch();
-        checkDiagMatch();
 
-        return;
+        let matches = [checkRowMatch(), checkColMatch(), checkDiagMatch()];
+        return matches.some((element) => {return element});
     };
 
     const checkRowMatch = () => {
@@ -148,18 +147,50 @@ const Player = (name) => {
         return;
     };
 
+    const getScore = () => {
+        return score;
+    }
+
+    const getName = () => {
+        return name;
+    }
+
     return {
-        increaseScore
+        increaseScore,
+        getScore,
+        getName
     }
 };
+
+let count = 0;
+let player1;
+let player2;
 
 board.forEach(cell => {
     cell.addEventListener('click', (event) => {
         const sym = gameBoard.playerTurn();
         const cellCoord = displayController.changeDisplay(event, sym);
-        gameBoard.addSym(sym, cellCoord[0], cellCoord[1]);
-    })
+        if (gameBoard.addSym(sym, cellCoord[0], cellCoord[1])) {
+            if (gameBoard.playerTurn() == 'X') {
+                window.alert(`${player2.getName()} wins`);
+            } else if (gameBoard.playerTurn() == 'O') {
+                window.alert(`${player1.getName()} wins`);
+            }
+        }
+    });
 });
 
-const michaelangelo = Player('Michaelangelo');
-const diana = Player('Diana');
+form.addEventListener('submit', (event) => {
+    let player= document.createElement('div');
+    player.textContent = form.elements['name'].value;
+    document.body.appendChild(player);
+    if (count < 1) {
+        player1 = Player(player.textContent);
+    } else {
+        player2 = Player(player.textContent);
+    }
+
+    count++;
+    event.preventDefault();
+});
+
