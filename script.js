@@ -97,7 +97,6 @@ const gameBoard = (() => {
 const displayController = (() => {
     const changeDisplay = (cell, playerTurn) => {
         const cellName = cell.target.className;
-        console.log(cell.target.textContent);
 
         if (cell.target.textContent != '') {
             return [3, 3];
@@ -180,17 +179,5 @@ board.forEach(cell => {
     });
 });
 
-form.addEventListener('submit', (event) => {
-    let player= document.createElement('div');
-    player.textContent = form.elements['name'].value;
-    document.body.appendChild(player);
-    if (count < 1) {
-        player1 = Player(player.textContent);
-    } else {
-        player2 = Player(player.textContent);
-    }
-
-    count++;
-    event.preventDefault();
-});
-
+player1 = prompt("What is player 1's name?");
+player2 = prompt("What is player 2's name?");
