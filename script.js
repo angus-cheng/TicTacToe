@@ -162,8 +162,8 @@ const Player = (name) => {
 };
 
 let count = 0;
-let player1;
-let player2;
+const player1 = Player(prompt("What is player 1's name?"));
+const player2 = Player(prompt("What is player 2's name?"));
 
 board.forEach(cell => {
     cell.addEventListener('click', (event) => {
@@ -179,5 +179,3 @@ board.forEach(cell => {
     });
 });
 
-player1 = prompt("What is player 1's name?");
-player2 = prompt("What is player 2's name?");
