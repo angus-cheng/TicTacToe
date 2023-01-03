@@ -164,6 +164,11 @@ const Player = (name) => {
 let count = 0;
 const player1 = Player(prompt("What is player 1's name?"));
 const player2 = Player(prompt("What is player 2's name?"));
+const restartBtn = document.querySelector("#restartBtn");
+
+restartBtn.addEventListener("click", () => {
+    location.reload();
+})
 
 board.forEach(cell => {
     cell.addEventListener('click', (event) => {
@@ -172,8 +177,10 @@ board.forEach(cell => {
         if (gameBoard.addSym(sym, cellCoord[0], cellCoord[1])) {
             if (gameBoard.playerTurn() == 'X') {
                 window.alert(`${player2.getName()} wins`);
+                restartBtn.style.display = "block";
             } else if (gameBoard.playerTurn() == 'O') {
                 window.alert(`${player1.getName()} wins`);
+                restartBtn.style.display = "block";
             }
         }
     });
